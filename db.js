@@ -1,125 +1,102 @@
-// PostgreSQL Backend API client layer
+// Mock Data - GitHub Pages ke liye (Backend nahi hai)
 
-const API_URL = 'http://localhost:5000/api';
+const mockStudents = [
+  { id: 1, name: "Aarav Sharma", class: "10-A", rollNo: 101, parent: "Ramesh Sharma", attendance: 92, feeStatus: "Paid", email: "aarav.sharma@example.com" },
+  { id: 2, name: "Ananya Verma", class: "10-A", rollNo: 102, parent: "Sanjay Verma", attendance: 88, feeStatus: "Pending", email: "ananya.v@example.com" },
+  { id: 3, name: "Kabir Mehta", class: "12-B", rollNo: 103, parent: "Anil Mehta", attendance: 91, feeStatus: "Paid", email: "kabir.m@example.com" },
+  { id: 4, name: "Isha Patel", class: "12-B", rollNo: 104, parent: "Vijay Patel", attendance: 86, feeStatus: "Unpaid", email: "isha.p@example.com" },
+  { id: 5, name: "Rohan Gupta", class: "10-A", rollNo: 105, parent: "Sunil Gupta", attendance: 81, feeStatus: "Pending", email: "rohan.g@example.com" },
+  { id: 6, name: "Priya Singh", class: "11-C", rollNo: 106, parent: "Rajesh Singh", attendance: 95, feeStatus: "Paid", email: "priya.s@example.com" }
+];
 
-// No-op for backward compatibility since the backend handles table migrations and seeding automatically!
+const mockTeachers = [
+  { id: 1, name: "Dr. Rajesh Kumar", subject: "Mathematics", qualification: "PhD" },
+  { id: 2, name: "Mrs. Priya Sharma", subject: "English", qualification: "M.Ed" },
+  { id: 3, name: "Mr. Amit Patel", subject: "Science", qualification: "B.Sc" }
+];
+
+const mockDashboard = {
+  totalStudents: 6,
+  avgAttendance: 89,
+  feesCollected: 193000,
+  pendingFees: 90000
+};
+
+// No-op initialization
 export async function initDatabase() {
-    try {
-        const res = await fetch(`${API_URL}/students`);
-        if (res.ok) {
-            console.log("Connected to backend database API successfully.");
-        }
-    } catch (err) {
-        console.error("Backend database connection check failed:", err.message);
-    }
+  console.log("Using mock data for GitHub Pages");
 }
 
-// Student APIs
+// Student APIs - Return Mock Data
 export async function getStudents() {
-    const res = await fetch(`${API_URL}/students`);
-    if (!res.ok) throw new Error("Failed to fetch students");
-    return await res.json();
+  return mockStudents;
 }
 
 export async function saveStudent(studentData) {
-    const res = await fetch(`${API_URL}/students`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(studentData)
-    });
-    if (!res.ok) throw new Error("Failed to save student");
-    return await res.json();
+  const newStudent = { id: Date.now(), ...studentData };
+  mockStudents.push(newStudent);
+  return newStudent;
 }
 
 export async function deleteStudent(id) {
-    const res = await fetch(`${API_URL}/students/${id}`, {
-        method: 'DELETE'
-    });
-    if (!res.ok) throw new Error("Failed to delete student");
-    return await res.json();
+  const index = mockStudents.findIndex(s => s.id === id);
+  if (index !== -1) mockStudents.splice(index, 1);
+  return { success: true };
 }
 
-// Teacher APIs
+// Teacher APIs - Return Mock Data
 export async function getTeachers() {
-    const res = await fetch(`${API_URL}/teachers`);
-    if (!res.ok) throw new Error("Failed to fetch teachers");
-    return await res.json();
+  return mockTeachers;
 }
 
 export async function saveTeacher(teacherData) {
-    const res = await fetch(`${API_URL}/teachers`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(teacherData)
-    });
-    if (!res.ok) throw new Error("Failed to save teacher");
-    return await res.json();
+  const newTeacher = { id: Date.now(), ...teacherData };
+  mockTeachers.push(newTeacher);
+  return newTeacher;
 }
 
 export async function deleteTeacher(id) {
-    const res = await fetch(`${API_URL}/teachers/${id}`, {
-        method: 'DELETE'
-    });
-    if (!res.ok) throw new Error("Failed to delete teacher");
-    return await res.json();
+  const index = mockTeachers.findIndex(t => t.id === id);
+  if (index !== -1) mockTeachers.splice(index, 1);
+  return { success: true };
 }
 
 // Attendance APIs
 export async function getAttendance(date, className) {
-    const res = await fetch(`${API_URL}/attendance?date=${date}&class=${className}`);
-    if (!res.ok) throw new Error("Failed to fetch attendance");
-    return await res.json();
+  return mockStudents.filter(s => s.class === className);
 }
 
 export async function saveAttendance(date, className, records) {
-    const res = await fetch(`${API_URL}/attendance`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date, class: className, records })
-    });
-    if (!res.ok) throw new Error("Failed to save attendance");
-    return await res.json();
+  return { success: true, message: "Attendance saved" };
 }
 
-// Fee/Invoice APIs
+// Invoice APIs
 export async function getInvoices() {
-    const res = await fetch(`${API_URL}/invoices`);
-    if (!res.ok) throw new Error("Failed to fetch invoices");
-    return await res.json();
+  return mockStudents.map(s => ({
+    id: s.id,
+    studentName: s.name,
+    amount: Math.random() * 50000,
+    status: s.feeStatus
+  }));
 }
 
 export async function payInvoice(invoiceId, amountPaid) {
-    const res = await fetch(`${API_URL}/invoices/${invoiceId}/pay`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amountPaid })
-    });
-    if (!res.ok) throw new Error("Failed to process payment");
-    return await res.json();
+  return { success: true, message: "Payment processed" };
 }
 
 // Weekly Tests APIs
 export async function getWeeklyTests(className) {
-    const queryParam = className ? `?class=${className}` : '';
-    const res = await fetch(`${API_URL}/weekly-tests${queryParam}`);
-    if (!res.ok) throw new Error("Failed to fetch weekly tests");
-    return await res.json();
+  return [
+    { id: 1, studentId: 1, subject: "Math", marks: 85, maxMarks: 100 },
+    { id: 2, studentId: 2, subject: "Math", marks: 92, maxMarks: 100 },
+    { id: 3, studentId: 3, subject: "English", marks: 78, maxMarks: 100 }
+  ];
 }
 
 export async function saveWeeklyTest(testData) {
-    const res = await fetch(`${API_URL}/weekly-tests`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(testData)
-    });
-    if (!res.ok) throw new Error("Failed to save weekly test scores");
-    return await res.json();
+  return { id: Date.now(), ...testData };
 }
 
 export async function deleteWeeklyTest(testId) {
-    const res = await fetch(`${API_URL}/weekly-tests/${testId}`, {
-        method: 'DELETE'
-    });
-    if (!res.ok) throw new Error("Failed to delete weekly test");
-    return await res.json();
+  return { success: true };
 }
