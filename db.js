@@ -1,12 +1,102 @@
 // Mock Data - GitHub Pages ke liye (Backend nahi hai)
 
 const mockStudents = [
-  { id: 1, name: "Aarav Sharma", class: "10-A", rollNo: 101, parent: "Ramesh Sharma", attendance: 92, feeStatus: "Paid", email: "aarav.sharma@example.com" },
-  { id: 2, name: "Ananya Verma", class: "10-A", rollNo: 102, parent: "Sanjay Verma", attendance: 88, feeStatus: "Pending", email: "ananya.v@example.com" },
-  { id: 3, name: "Kabir Mehta", class: "12-B", rollNo: 103, parent: "Anil Mehta", attendance: 91, feeStatus: "Paid", email: "kabir.m@example.com" },
-  { id: 4, name: "Isha Patel", class: "12-B", rollNo: 104, parent: "Vijay Patel", attendance: 86, feeStatus: "Unpaid", email: "isha.p@example.com" },
-  { id: 5, name: "Rohan Gupta", class: "10-A", rollNo: 105, parent: "Sunil Gupta", attendance: 81, feeStatus: "Pending", email: "rohan.g@example.com" },
-  { id: 6, name: "Priya Singh", class: "11-C", rollNo: 106, parent: "Rajesh Singh", attendance: 95, feeStatus: "Paid", email: "priya.s@example.com" }
+  { 
+    id: 1, 
+    name: "Aarav Sharma", 
+    class: "10-A", 
+    rollNumber: "101", 
+    parentName: "Ramesh Sharma", 
+    attendance: 92, 
+    feeStatus: "Paid", 
+    email: "aarav.sharma@example.com",
+    gender: "Male",
+    contact: "+91 98765 43210",
+    paidAmount: 45000,
+    pendingAmount: 0,
+    bgGradient: "linear-gradient(135deg, #FF6B6B, #FF8E53)",
+    initials: "AS"
+  },
+  { 
+    id: 2, 
+    name: "Ananya Verma", 
+    class: "10-A", 
+    rollNumber: "102", 
+    parentName: "Sanjay Verma", 
+    attendance: 88, 
+    feeStatus: "Pending", 
+    email: "ananya.v@example.com",
+    gender: "Female",
+    contact: "+91 87654 32109",
+    paidAmount: 20000,
+    pendingAmount: 25000,
+    bgGradient: "linear-gradient(135deg, #4E65FF, #92EFFD)",
+    initials: "AV"
+  },
+  { 
+    id: 3, 
+    name: "Kabir Mehta", 
+    class: "12-B", 
+    rollNumber: "103", 
+    parentName: "Anil Mehta", 
+    attendance: 91, 
+    feeStatus: "Paid", 
+    email: "kabir.m@example.com",
+    gender: "Male",
+    contact: "+91 76543 21098",
+    paidAmount: 50000,
+    pendingAmount: 0,
+    bgGradient: "linear-gradient(135deg, #11998e, #38ef7d)",
+    initials: "KM"
+  },
+  { 
+    id: 4, 
+    name: "Isha Patel", 
+    class: "12-B", 
+    rollNumber: "104", 
+    parentName: "Vijay Patel", 
+    attendance: 86, 
+    feeStatus: "Unpaid", 
+    email: "isha.p@example.com",
+    gender: "Female",
+    contact: "+91 65432 10987",
+    paidAmount: 0,
+    pendingAmount: 50000,
+    bgGradient: "linear-gradient(135deg, #FC466B, #3F5EFB)",
+    initials: "IP"
+  },
+  { 
+    id: 5, 
+    name: "Rohan Gupta", 
+    class: "10-A", 
+    rollNumber: "105", 
+    parentName: "Sunil Gupta", 
+    attendance: 81, 
+    feeStatus: "Pending", 
+    email: "rohan.g@example.com",
+    gender: "Male",
+    contact: "+91 99887 76655",
+    paidAmount: 30000,
+    pendingAmount: 15000,
+    bgGradient: "linear-gradient(135deg, #f857a6, #ff5858)",
+    initials: "RG"
+  },
+  { 
+    id: 6, 
+    name: "Priya Singh", 
+    class: "11-C", 
+    rollNumber: "106", 
+    parentName: "Rajesh Singh", 
+    attendance: 95, 
+    feeStatus: "Paid", 
+    email: "priya.s@example.com",
+    gender: "Female",
+    contact: "+91 88776 65544",
+    paidAmount: 48000,
+    pendingAmount: 0,
+    bgGradient: "linear-gradient(135deg, #00c6ff, #0072ff)",
+    initials: "PS"
+  }
 ];
 
 const mockTeachers = [
@@ -33,7 +123,12 @@ export async function getStudents() {
 }
 
 export async function saveStudent(studentData) {
-  const newStudent = { id: Date.now(), ...studentData };
+  const newStudent = { 
+    id: Date.now(), 
+    ...studentData,
+    bgGradient: studentData.bgGradient || "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    initials: studentData.initials || studentData.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)
+  };
   mockStudents.push(newStudent);
   return newStudent;
 }
