@@ -100,9 +100,42 @@ const mockStudents = [
 ];
 
 const mockTeachers = [
-  { id: 1, name: "Dr. Rajesh Kumar", subject: "Mathematics", qualification: "PhD" },
-  { id: 2, name: "Mrs. Priya Sharma", subject: "English", qualification: "M.Ed" },
-  { id: 3, name: "Mr. Amit Patel", subject: "Science", qualification: "B.Sc" }
+  { 
+    id: 1, 
+    name: "Dr. Rajesh Kumar", 
+    subject: "Mathematics", 
+    qualification: "PhD",
+    department: "Mathematics",
+    classTeacher: "10-A",
+    email: "rajesh.kumar@school.edu",
+    contact: "+91 90001 20001",
+    bgGradient: "linear-gradient(135deg, #7F00FF, #E100FF)",
+    initials: "RK"
+  },
+  { 
+    id: 2, 
+    name: "Mrs. Priya Sharma", 
+    subject: "English", 
+    qualification: "M.Ed",
+    department: "Languages",
+    classTeacher: "11-C",
+    email: "priya.sharma@school.edu",
+    contact: "+91 90002 20002",
+    bgGradient: "linear-gradient(135deg, #F2C94C, #F2994A)",
+    initials: "PS"
+  },
+  { 
+    id: 3, 
+    name: "Mr. Amit Patel", 
+    subject: "Science", 
+    qualification: "B.Sc",
+    department: "Science",
+    classTeacher: "12-B",
+    email: "amit.patel@school.edu",
+    contact: "+91 90003 20003",
+    bgGradient: "linear-gradient(135deg, #36D1DC, #5B86E5)",
+    initials: "AP"
+  }
 ];
 
 const mockDashboard = {
@@ -145,7 +178,20 @@ export async function getTeachers() {
 }
 
 export async function saveTeacher(teacherData) {
-  const newTeacher = { id: Date.now(), ...teacherData };
+  const gradients = [
+    'linear-gradient(135deg, #7F00FF, #E100FF)',
+    'linear-gradient(135deg, #F2C94C, #F2994A)',
+    'linear-gradient(135deg, #36D1DC, #5B86E5)',
+    'linear-gradient(135deg, #FF6B6B, #FF8E53)',
+    'linear-gradient(135deg, #4E65FF, #92EFFD)',
+    'linear-gradient(135deg, #11998e, #38ef7d)'
+  ];
+  const newTeacher = { 
+    id: Date.now(), 
+    ...teacherData,
+    bgGradient: teacherData.bgGradient || gradients[Math.floor(Math.random() * gradients.length)],
+    initials: teacherData.initials || teacherData.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)
+  };
   mockTeachers.push(newTeacher);
   return newTeacher;
 }
@@ -182,9 +228,30 @@ export async function payInvoice(invoiceId, amountPaid) {
 // Weekly Tests APIs
 export async function getWeeklyTests(className) {
   return [
-    { id: 1, studentId: 1, subject: "Math", marks: 85, maxMarks: 100 },
-    { id: 2, studentId: 2, subject: "Math", marks: 92, maxMarks: 100 },
-    { id: 3, studentId: 3, subject: "English", marks: 78, maxMarks: 100 }
+    { 
+      id: 1, 
+      testName: "Weekly Math Test 1", 
+      subject: "Math", 
+      date: "2026-05-25",
+      maxMarks: 100,
+      marks: { 1: 85, 2: 92, 5: 78 } 
+    },
+    { 
+      id: 2, 
+      testName: "Weekly Math Test 2", 
+      subject: "Math", 
+      date: "2026-05-26",
+      maxMarks: 100,
+      marks: { 1: 88, 2: 90, 5: 82 } 
+    },
+    { 
+      id: 3, 
+      testName: "Science Quiz 1", 
+      subject: "English", 
+      date: "2026-05-27",
+      maxMarks: 100,
+      marks: { 3: 78, 4: 65 } 
+    }
   ];
 }
 
